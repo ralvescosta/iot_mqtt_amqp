@@ -1,6 +1,8 @@
 import amqp, { Channel } from 'amqplib/callback_api'
 
-const queue = 'hello'
+const exchangeName = 'mqtt_bridge'
+const queueName = 'bridge'
+
 let amqpChannel: Channel
 
 async function amqpConnectCallbackToPromise (): Promise<Channel> {
@@ -16,9 +18,12 @@ async function amqpConnectCallbackToPromise (): Promise<Channel> {
           rejects(error1)
         }
 
-        channel.assertQueue(queue, {
-          durable: true
-        })
+        channel.assertExchange(exchangeName, 'direct', { durable: true })
+        channel.assertQueue(queueName, { durable: true })
+        channel.bindQueue(queueName, exchangeName, 'mqtt_bridge_bridge')
+        // channel.publish('', '', '', {
+        //   timestamp: 20000
+        // })
 
         // channel.sendToQueue(queue, Buffer.from('hello'))
 

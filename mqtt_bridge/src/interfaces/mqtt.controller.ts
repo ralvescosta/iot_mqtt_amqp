@@ -1,14 +1,16 @@
-export function mqttController ({ usecase }:any) {
+import { IBridgeUsecase } from 'application/bridge.usecase'
+
+type Params = {
+  usecase: IBridgeUsecase
+}
+
+export function mqttController ({ usecase }: Params) {
   return function (topic: string, message: any) {
     let json: any
     try {
       json = JSON.parse(message.toString())
     } catch (err) {}
 
-    const result = usecase({ topic, data: json })
-
-    if (result) {
-      console.log('SENDO TO AMQP')
-    }
+    usecase({ topic, data: json })
   }
 }
