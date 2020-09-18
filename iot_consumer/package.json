@@ -1,0 +1,39 @@
+{
+  "name": "iot_consumer",
+  "description": "IoT Microservices based on MQTT and RebbitMQ",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "ralvescosta",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "NODE_ENV=development yarn nodemon --inspect=0.0.0.0:9333 src/index.ts",
+    "build": "tsc",
+    "test": "jest --passWithNoTests --noStackTrace --runInBand",
+    "test:watch": "jest --watchAll --noStackTrace --runInBand",
+    "test:staged": "yarn test -- --findRelatedTests src/",
+    "test:cov": "jest --coverage",
+    "test:coveralls": "yarn run test:ci && coveralls < coverage/lcov.info"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.5.13",
+    "@types/node": "^14.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.3.0",
+    "jest": "^26.4.2",
+    "lint-staged": "^10.4.0",
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.6.0"
+  }
+}
