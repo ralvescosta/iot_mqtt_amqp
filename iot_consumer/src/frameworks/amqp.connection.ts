@@ -1,5 +1,5 @@
 import amqp, { Channel } from 'amqplib/callback_api'
-import { mqttBridgeExchangeName, mqttBridgeQueueName, mqttBridgeRoutingKey } from '../env'
+// import { exchangeName, queueName, routingKey } from '../env'
 
 let amqpChannel: Channel
 
@@ -16,9 +16,9 @@ async function amqpConnectCallbackToPromise (): Promise<Channel> {
           rejects(channelError)
         }
 
-        channel.assertExchange(mqttBridgeExchangeName, 'direct', { durable: true }, (err) => rejects(err))
-        channel.assertQueue(mqttBridgeQueueName, { durable: true }, (err) => rejects(err))
-        channel.bindQueue(mqttBridgeQueueName, mqttBridgeExchangeName, mqttBridgeRoutingKey, {}, (err) => rejects(err))
+        // channel.assertExchange(exchangeName, 'direct', { durable: true }, (err) => rejects(err))
+        // channel.assertQueue(queueName, { durable: true }, (err) => rejects(err))
+        // channel.bindQueue(queueName, exchangeName, routingKey, {}, (err) => rejects(err))
 
         resolve(channel)
       })
