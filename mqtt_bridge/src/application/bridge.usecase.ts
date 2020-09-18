@@ -16,7 +16,7 @@ export type IBridgeUsecase = {
 
 export function bridgeUsecase ({ amqpChannel }: Params): IBridgeUsecase {
   return function (bridgeData: BridgeData): void {
-    console.log(bridgeData)
     amqpChannel.publish(mqttBridgeExchangeName, mqttBridgeRoutingKey, Buffer.from(JSON.stringify(bridgeData)), { expiration: mqttBridgePublishExpiration })
+    console.count('published')
   }
 }

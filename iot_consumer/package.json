@@ -6,7 +6,7 @@
   "author": "ralvescosta",
   "license": "MIT",
   "scripts": {
-    "start:dev": "NODE_ENV=development yarn nodemon --inspect=0.0.0.0:9333 src/index.ts",
+    "start:dev": "NODE_ENV=development yarn nodemon --inspect=0.0.0.0:9555 src/index.ts",
     "build": "tsc",
     "test": "jest --passWithNoTests --noStackTrace --runInBand",
     "test:watch": "jest --watchAll --noStackTrace --runInBand",

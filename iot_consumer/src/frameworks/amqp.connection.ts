@@ -1,5 +1,4 @@
 import amqp, { Channel } from 'amqplib/callback_api'
-// import { exchangeName, queueName, routingKey } from '../env'
 
 let amqpChannel: Channel
 
@@ -15,10 +14,6 @@ async function amqpConnectCallbackToPromise (): Promise<Channel> {
         if (channelError) {
           rejects(channelError)
         }
-
-        // channel.assertExchange(exchangeName, 'direct', { durable: true }, (err) => rejects(err))
-        // channel.assertQueue(queueName, { durable: true }, (err) => rejects(err))
-        // channel.bindQueue(queueName, exchangeName, routingKey, {}, (err) => rejects(err))
 
         resolve(channel)
       })

@@ -1,7 +1,15 @@
+import { Channel } from 'amqplib/callback_api'
+import { MqttClient } from 'mqtt'
+
 import { bridgeUsecase } from '../application/bridge.usecase'
 import { mqttController } from '../interfaces/mqtt.controller'
 
-export function mqttListenersRegister ({ mqttConnection, amqpChannel }: any) {
+type Params = {
+  mqttConnection:MqttClient;
+  amqpChannel: Channel;
+}
+
+export function mqttListenersRegister ({ mqttConnection, amqpChannel }: Params) {
   mqttConnection.on('connect', () => {
     console.log('connected')
   })
