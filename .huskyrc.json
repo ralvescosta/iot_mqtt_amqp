@@ -1,6 +1,0 @@
-{
-  "hooks": {
-    "pre-commit": "lint-staged",
-    "pre-push": "python3 pre_push.py"
-  }
-}
