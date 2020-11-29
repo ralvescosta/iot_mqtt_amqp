@@ -1,6 +1,6 @@
 {
   "hooks": {
     "pre-commit": "lint-staged",
-    "pre-push": "yarn test:cov"
+    "pre-push": "python3 pre_push.py"
   }
 }

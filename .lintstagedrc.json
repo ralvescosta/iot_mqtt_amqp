@@ -1,0 +1,7 @@
+{
+  "*.ts": [
+    "yarn eslint '**/src/**' --fix",
+    "git add .",
+    "python3 pre_commit.py"
+  ]
+}
