@@ -1,4 +1,3 @@
-import { Channel } from 'amqplib/callback_api'
 import { mqttBridgeExchangeName, mqttBridgeRoutingKey, mqttBridgePublishExpiration } from '../env'
 
 export interface BridgeData {
@@ -6,16 +5,18 @@ export interface BridgeData {
   data: object
 }
 
-type Params = {
-  amqpChannel: Channel
+export type BridgeParams = {
+  amqpChannel: {
+    publish: (s1: string, s2: string, s3: Buffer, s4: object) => void
+  }
 }
 
 export type IBridgeUsecase = {
   (bridgeData: BridgeData): void
 }
 
-export function bridgeUsecase ({ amqpChannel }: Params): IBridgeUsecase {
-  return function (bridgeData: BridgeData): void {
+export function bridgeUsecase ({ amqpChannel }: BridgeParams): IBridgeUsecase {
+  return function usecase (bridgeData: BridgeData): void {
     amqpChannel.publish(mqttBridgeExchangeName, mqttBridgeRoutingKey, Buffer.from(JSON.stringify(bridgeData)), { expiration: mqttBridgePublishExpiration })
     console.count('published')
   }

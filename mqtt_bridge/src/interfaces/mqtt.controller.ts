@@ -1,11 +1,11 @@
 import { IBridgeUsecase } from 'application/bridge.usecase'
 
-type Params = {
+export type ControllerParams = {
   usecase: IBridgeUsecase
 }
 
-export function mqttController ({ usecase }: Params) {
-  return function (topic: string, message: any) {
+export function mqttController ({ usecase }: ControllerParams) {
+  return function controller (topic: string, message: any) {
     let json: any
     try {
       json = JSON.parse(message.toString())
