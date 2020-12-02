@@ -19,10 +19,9 @@ type MqttClient struct {
 func (m *MqttClient) ConnectToMQTT() error {
 
 	opts := MQTT.NewClientOptions()
-	opts.AddBroker("test.mosquitto.org:1883")
+	opts.AddBroker(os.Getenv("MQTT_URL"))
 	opts.SetClientID("go_bride_id_1237")
 	opts.SetKeepAlive(60 * time.Second)
-	// opts.SetDefaultPublishHandler(m.MsgHandle)
 
 	m.client = MQTT.NewClient(opts)
 	if token := m.client.Connect(); token.Wait() && token.Error() != nil {

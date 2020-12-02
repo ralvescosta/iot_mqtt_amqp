@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"os"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 
@@ -17,13 +18,13 @@ type SendToMessagingService struct {
 func (s *SendToMessagingService) mqttHandler(client MQTT.Client, message MQTT.Message) {
 	fmt.Println(message.Topic(), string(message.Payload()))
 	fmt.Println()
-	s.messaging.Pub("", "mqtt_bridge", false, false, message.Payload())
+	s.messaging.Pub("", os.Getenv("AMQP_QUEUE"), false, false, message.Payload())
 }
 
 // Usecase ...
 func (s *SendToMessagingService) Usecase() {
 
-	s.mqttClient.RegisterEvent("misura/THK_GARMI1_MS01", 2, s.mqttHandler)
+	s.mqttClient.RegisterEvent(os.Getenv("MQTT_TOPIC"), 2, s.mqttHandler)
 }
 
 // NewSendToMessagingService ...

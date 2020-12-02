@@ -6,8 +6,13 @@ import (
 )
 
 func main() {
+	err := frameworks.RegisterEnvFile()
+	if err != nil {
+		panic("Env Config Err")
+	}
+
 	messaging := frameworks.NewMessaging()
-	err := messaging.Connect()
+	err = messaging.Connect()
 	if err != nil {
 		panic("RabbitMQ Connection Err")
 	}

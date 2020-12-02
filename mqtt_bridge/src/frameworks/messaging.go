@@ -1,6 +1,10 @@
 package frameworks
 
-import "github.com/streadway/amqp"
+import (
+	"os"
+
+	"github.com/streadway/amqp"
+)
 
 // Messaging ...
 type Messaging struct {
@@ -10,7 +14,7 @@ type Messaging struct {
 
 // Connect ...
 func (s *Messaging) Connect() error {
-	conn, err := amqp.Dial("amqp://rabbitmq:123456@localhost:5672/")
+	conn, err := amqp.Dial(os.Getenv("AMQP_URL"))
 	if err != nil {
 		return err
 	}
@@ -21,12 +25,12 @@ func (s *Messaging) Connect() error {
 	}
 
 	_, err = ch.QueueDeclare(
-		"mqtt_bridge", // name
-		false,         // durable
-		false,         // delete when unused
-		false,         // exclusive
-		false,         // no-wait
-		nil,           // arguments
+		os.Getenv("AMQP_QUEUE"), // name
+		false,                   // durable
+		false,                   // delete when unused
+		false,                   // exclusive
+		false,                   // no-wait
+		nil,                     // arguments
 	)
 	if err != nil {
 		return err
