@@ -10,10 +10,6 @@ import (
 	controllers "bridge/src/interfaces"
 )
 
-func subscribers(mqttClient *frameworks.MqttClient) {
-
-}
-
 func main() {
 	err := frameworks.RegisterEnvFile()
 	if err != nil {
