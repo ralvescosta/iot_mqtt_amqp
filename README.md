@@ -1,4 +1,4 @@
-# Node IoT Architecture using MQTT and RabbitMQ
+# Go Lang IoT Architecture using MQTT and RabbitMQ
 
 ## Concepts
 
