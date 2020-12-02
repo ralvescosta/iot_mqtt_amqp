@@ -1,9 +1,23 @@
 package main
 
+import (
+	applications "bridge/src/applications"
+	frameworks "bridge/src/frameworks"
+)
+
 func main() {
-	messageService := NewMessageService()
+	messaging := frameworks.NewMessaging()
+	err := messaging.Connect()
+	if err != nil {
+		panic("RabbitMQ Connection Err")
+	}
 
-	mqttService := NewMqttService(messageService)
-	mqttService.ConnectToMQTT()
+	mqttClient := frameworks.NewMqttClient()
+	err = mqttClient.ConnectToMQTT()
+	if err != nil {
+		panic("MQTT Connection Err")
+	}
 
+	bridge := applications.NewSendToMessagingService(mqttClient, messaging)
+	bridge.Usecase()
 }

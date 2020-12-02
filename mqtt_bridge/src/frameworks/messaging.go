@@ -1,15 +1,15 @@
-package main
+package frameworks
 
 import "github.com/streadway/amqp"
 
-// MessageService ...
-type MessageService struct {
+// Messaging ...
+type Messaging struct {
 	conn    *amqp.Connection
 	channel *amqp.Channel
 }
 
 // Connect ...
-func (s *MessageService) Connect() error {
+func (s *Messaging) Connect() error {
 	conn, err := amqp.Dial("amqp://rabbitmq:123456@localhost:5672/")
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func (s *MessageService) Connect() error {
 }
 
 // Pub ...
-func (s *MessageService) Pub(exchange string, routingKey string, mandatory bool, immediate bool, data []byte) error {
+func (s *Messaging) Pub(exchange string, routingKey string, mandatory bool, immediate bool, data []byte) error {
 
 	err := s.channel.Publish(
 		exchange,   // exchange = ""
@@ -59,12 +59,12 @@ func (s *MessageService) Pub(exchange string, routingKey string, mandatory bool,
 }
 
 // Defer ...
-func (s *MessageService) Defer() {
+func (s *Messaging) Defer() {
 	defer s.channel.Close()
 	defer s.conn.Close()
 }
 
-// NewMessageService ..
-func NewMessageService() *MessageService {
-	return &MessageService{}
+// NewMessaging ..
+func NewMessaging() *Messaging {
+	return &Messaging{}
 }
