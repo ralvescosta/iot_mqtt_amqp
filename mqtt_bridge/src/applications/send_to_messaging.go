@@ -1,33 +1,26 @@
-package services
+package applications
 
 import (
 	"fmt"
 	"os"
-
-	MQTT "github.com/eclipse/paho.mqtt.golang"
 
 	frameworks "bridge/src/frameworks"
 )
 
 // SendToMessagingService ...
 type SendToMessagingService struct {
-	mqttClient *frameworks.MqttClient
-	messaging  *frameworks.Messaging
-}
-
-func (s *SendToMessagingService) mqttHandler(client MQTT.Client, message MQTT.Message) {
-	fmt.Println(message.Topic(), string(message.Payload()))
-	fmt.Println()
-	s.messaging.Pub("", os.Getenv("AMQP_QUEUE"), false, false, message.Payload())
+	messaging *frameworks.Messaging
 }
 
 // Usecase ...
-func (s *SendToMessagingService) Usecase() {
+func (s *SendToMessagingService) Usecase(topic string, payload []byte) error {
+	fmt.Println(topic, string(payload))
+	fmt.Println()
 
-	s.mqttClient.RegisterEvent(os.Getenv("MQTT_TOPIC"), 2, s.mqttHandler)
+	return s.messaging.Pub("", os.Getenv("AMQP_QUEUE"), false, false, payload)
 }
 
 // NewSendToMessagingService ...
-func NewSendToMessagingService(mqttClient *frameworks.MqttClient, messaging *frameworks.Messaging) *SendToMessagingService {
-	return &SendToMessagingService{mqttClient: mqttClient, messaging: messaging}
+func NewSendToMessagingService(messaging *frameworks.Messaging) *SendToMessagingService {
+	return &SendToMessagingService{messaging: messaging}
 }

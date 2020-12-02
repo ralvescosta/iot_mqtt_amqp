@@ -3,8 +3,6 @@ package frameworks
 import (
 	"log"
 	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
@@ -12,7 +10,12 @@ import (
 
 // MqttClient ...
 type MqttClient struct {
-	client MQTT.Client
+	Client MQTT.Client
+}
+
+// IController ...
+type IController interface {
+	Handle(topic string, payload []byte) error
 }
 
 // ConnectToMQTT ...
@@ -23,8 +26,8 @@ func (m *MqttClient) ConnectToMQTT() error {
 	opts.SetClientID("go_bride_id_1237")
 	opts.SetKeepAlive(60 * time.Second)
 
-	m.client = MQTT.NewClient(opts)
-	if token := m.client.Connect(); token.Wait() && token.Error() != nil {
+	m.Client = MQTT.NewClient(opts)
+	if token := m.Client.Connect(); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
 
@@ -36,18 +39,11 @@ func (*MqttClient) logger() {
 	MQTT.ERROR = log.New(os.Stdout, "", 0)
 }
 
-// RegisterEvent ...
-func (m *MqttClient) RegisterEvent(topic string, qos uint8, handler MQTT.MessageHandler) error {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-
-	if token := m.client.Subscribe(topic, qos, handler); token.Wait() && token.Error() != nil {
-		return token.Error()
+// MQTTHandleAdapt ...
+func (*MqttClient) MQTTHandleAdapt(controller IController) func(client MQTT.Client, message MQTT.Message) {
+	return func(client MQTT.Client, message MQTT.Message) {
+		controller.Handle(message.Topic(), message.Payload())
 	}
-
-	<-c
-
-	return nil
 }
 
 // NewMqttClient ...
