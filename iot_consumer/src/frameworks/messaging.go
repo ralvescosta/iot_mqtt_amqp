@@ -49,16 +49,16 @@ func (s *Messaging) Connect() error {
 }
 
 // Sub ...
-func (s *Messaging) Sub(controller IController) error {
+func (s *Messaging) Sub(queue string, controller IController) error {
 
 	msgs, err := (*s.channel).Consume(
-		"hello", // queue
-		"",      // consumer
-		true,    // auto-ack
-		false,   // exclusive
-		false,   // no-local
-		false,   // no-wait
-		nil,     // args
+		queue, // queue
+		"",    // consumer
+		true,  // auto-ack
+		false, // exclusive
+		false, // no-local
+		false, // no-wait
+		nil,   // args
 	)
 	if err != nil {
 		return err
